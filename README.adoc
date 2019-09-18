@@ -20,6 +20,9 @@ To run your application:
 ```
 ./mvnw clean compile exec:java
 ```
+Main class is -Dexec.mainClass=com.coats.d3.MainVerticle 
+
+we have standalone vertx app as well ..Use this PersonMain.kt for the same
 
 == Help
 
