@@ -16,7 +16,6 @@ class MainVerticle : AbstractVerticle() {
 
   override fun start(startPromise: Promise<Void>) {
    val router = createRouter()
-
    // router.route().handler(ResponseContentTypeHandler.create())
     vertx
       .createHttpServer()
@@ -65,20 +64,13 @@ class MainVerticle : AbstractVerticle() {
       val personString:String = routingContext.bodyAsString
       //println("personString --> ${personString}")
       val personObject = json.parse(Person.serializer(), personString)
-      //println("personObject --> ${personObject}")
-      //println("personObject[0] --> ${personObject[0]}")
       val personlist=dao.fetchPersons()
       personlist.map { it-> if (it.pid == personObject.pid)
         routingContext.fail(406, RuntimeException("Sorry! Person Id already exits"))
       }
       val person: Person = dao.addPerson(personObject)
       val personJson = json.stringify(Person.serializer(), person)
-    /*  if ((personString.contains("country", true))) {
-
-      } else {
-        routingContext.fail(500, RuntimeException("Sorry! Something went wrong"))
-      }*/
-
+       //Not using this custom validations
       if ("country" !in personString){
         routingContext.fail(500, RuntimeException("Sorry! Something went wrong"))
       }
@@ -100,7 +92,6 @@ class MainVerticle : AbstractVerticle() {
     } catch (e: Throwable) {
       println("Inside catch ")
       println(e.message)
-      //response.statusCode=500
       routingContext.fail(500)
     }
 
@@ -156,6 +147,8 @@ class MainVerticle : AbstractVerticle() {
     }
   }
 }
+
+
 @Serializable
 data class Person(var pid:Int=0 ,var name:String ,var age:Int,var country:Country)
 @Serializable
