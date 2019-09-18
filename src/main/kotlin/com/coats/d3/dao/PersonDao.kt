@@ -36,7 +36,13 @@ class PersonDao {
     var  pidIs:Boolean = false
     if (person != null) {
       if(person.pid==0){
-        val pid = (0..1000).random()
+       // val pid = (0..1000).random()
+         var pid = Random.nextInt(30,100)
+         mock_person.map { it-> while (it.pid == pid){
+           pid = Random.nextInt(30,10000)
+         }
+
+        }
         person.pid=pid
         mock_person.add(person)
         pidIs=true
